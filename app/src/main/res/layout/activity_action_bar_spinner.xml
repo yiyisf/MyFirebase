@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
@@ -12,7 +12,6 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -23,8 +22,20 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_marginLeft="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_google"
+                app:civ_border_color="#64FFDA"
+                app:civ_border_width="1dp" />
+
             <Spinner
                 android:id="@+id/spinner"
+                android:paddingLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -34,6 +45,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/container"
+        android:layout_below="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -42,8 +54,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
+        <!--android:layout_gravity="end|bottom"-->
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

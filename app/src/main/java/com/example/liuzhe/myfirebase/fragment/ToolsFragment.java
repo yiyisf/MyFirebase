@@ -61,7 +61,7 @@ public class ToolsFragment extends Fragment implements View.OnClickListener, Vie
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static ToolsFragment newInstance() {
+    public static ToolsFragment newTool() {
         ToolsFragment fragment = new ToolsFragment();
 //        Bundle args = new Bundle();
 //        args.putString(TOOLS_AUTHDATA, MyApp.getGoogleSignInAccount().getEmail());

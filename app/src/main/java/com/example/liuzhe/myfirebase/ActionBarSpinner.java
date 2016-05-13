@@ -1,8 +1,17 @@
 package com.example.liuzhe.myfirebase;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -15,14 +24,28 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.content.Context;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.content.res.Resources.Theme;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ActionBarSpinner extends AppCompatActivity {
+import com.example.liuzhe.myfirebase.tools.LoadImageFromStorage;
+import com.example.liuzhe.myfirebase.tools.SaveToInternalStorage;
+
+import java.io.InputStream;
+import java.net.URL;
+
+
+public class ActionBarSpinner extends AppCompatActivity implements View.OnClickListener {
+
+    private Uri userUri;
+    private ImageView user_profile;
+    private String userId;
+    private Bitmap bitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +55,31 @@ public class ActionBarSpinner extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.findViewById(R.id.profile_image).setOnClickListener(this);
+        user_profile = (ImageView) toolbar.findViewById(R.id.profile_image);
+
+        try {
+
+            userUri = MyApp.getGoogleSignInAccount().getPhotoUrl();
+            userId = MyApp.getGoogleSignInAccount().getId();
+        } catch (Error e) {
+            e.printStackTrace();
+        }
+        setImageLogo();
 
         // Setup spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new MyAdapter(
+        MyAdapter spinner_adapter = new MyAdapter(
                 toolbar.getContext(),
                 new String[]{
-                        "Section 1",
+                        "Yiyi",
                         "Section 2",
                         "Section 3",
-                }));
+                });
+
+        spinner_adapter.setDropDownViewResource(R.layout.simple_list_item);
+
+        spinner.setAdapter(spinner_adapter);
 
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -86,10 +124,35 @@ public class ActionBarSpinner extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            PendingIntent pendingIntent =
+                    TaskStackBuilder.create(this)
+                            // add all of DetailsActivity's parents to the stack,
+                            // followed by DetailsActivity itself
+                            .addNextIntentWithParentStack(i)
+                            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setContentIntent(pendingIntent);
+            startActivity(i);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profile_image:
+                Toast.makeText(this, "点击了头像", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, peoplo.class);
+                startActivity(intent);
+
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -97,7 +160,7 @@ public class ActionBarSpinner extends AppCompatActivity {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
         public MyAdapter(Context context, String[] objects) {
-            super(context, android.R.layout.simple_list_item_1, objects);
+            super(context, R.layout.simple_list_item_1, objects);
             mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
         }
 
@@ -105,15 +168,18 @@ public class ActionBarSpinner extends AppCompatActivity {
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             View view;
 
-            if (convertView == null) {
-                // Inflate the drop down using the helper's LayoutInflater
-                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
-                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            } else {
-                view = convertView;
-            }
 
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                if (convertView == null) {
+                    // Inflate the drop down using the helper's LayoutInflater
+                    LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                    view = inflater.inflate(R.layout.simple_list_item_1, parent, false);
+
+                } else {
+                    view = convertView;
+                }
+//                return view;
+
+            TextView textView = (TextView) view.findViewById(R.id.spinner_text);
             textView.setText(getItem(position));
 
             return view;
@@ -165,4 +231,54 @@ public class ActionBarSpinner extends AppCompatActivity {
             return rootView;
         }
     }
+
+    private void setImageLogo() {
+        if (userUri != null) {
+            String dir = userId + "logo";
+            String filename = userUri.toString().replace("/", "_");
+            Bitmap loadBitmap = new LoadImageFromStorage(getApplicationContext(), dir, filename).LoadImage();
+            if (loadBitmap != null) {
+                user_profile.setImageBitmap(loadBitmap);
+            } else {
+                if (userUri != null) {
+                    new LoadImage().execute(userUri);
+                }
+            }
+        }
+    }
+
+    private class LoadImage extends AsyncTask<Uri, Void, Bitmap> {
+        protected Bitmap doInBackground(Uri... uris) {
+            String url = uris[0].toString();
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+                bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
+//                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uris[0]);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                return bitmap;
+            }
+        }
+
+        protected void onPostExecute(Bitmap image) {
+
+            if (image != null) {
+                user_profile.setImageBitmap(image);
+                SaveLogo(image);
+            } else {
+                Toast.makeText(getApplicationContext(), "Image Does Not exist or Network Error", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+    private void SaveLogo(Bitmap image) {
+        String dir = userId + "logo";
+        String filename = userUri.toString().replace("/", "_");
+        SaveToInternalStorage saveLogo = new SaveToInternalStorage(getApplicationContext(), dir, filename, image);
+        saveLogo.execute();
+    }
+
 }

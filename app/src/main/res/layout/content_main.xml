@@ -16,7 +16,7 @@
         android:id="@+id/buttonL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="List" />
+        android:text="G+" />
 
     <Button
         android:id="@+id/buttonR"
