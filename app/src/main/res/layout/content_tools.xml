@@ -1,0 +1,184 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.liuzhe.myfirebase.Main2Activity"
+    android:focusable="false">
+
+    <RelativeLayout
+        android:id="@+id/user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_background"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:paddingRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_add_white_24dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/QR"
+            android:layout_toRightOf="@+id/logo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/userEmal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="userId"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/QR"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/ic_build_black_24dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/card2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_info"
+        android:divider="@drawable/shape_line"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/Tool_button_paddingTop"
+        android:showDividers="middle">
+
+
+        <Button
+            android:id="@+id/camora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_image_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   相册"
+            android:enabled="true"
+            android:focusable="false"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_favorite_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   收藏"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/car3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card2"
+        android:divider="@drawable/shape_line"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/Tool_button_paddingTop"
+        android:showDividers="middle">
+
+
+        <Button
+            android:id="@+id/money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_credit_card_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   钱包"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/turn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_turned_in_not_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   优惠券"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/car3"
+        android:divider="@drawable/shape_line"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/Tool_button_paddingTop"
+        android:showDividers="middle"
+        android:focusable="false">
+
+
+        <Button
+            android:id="@+id/mood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_mood_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   表情"
+            android:textStyle="bold"
+            android:focusableInTouchMode="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card4"
+        android:divider="@drawable/shape_line"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/Tool_button_paddingTop"
+        android:showDividers="middle">
+
+
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_background"
+            android:drawableLeft="@drawable/ic_settings_black_24dp"
+            android:gravity="center_vertical"
+            android:text="   设置"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card5"
+        android:divider="@drawable/shape_line"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/Tool_lastLinear_paddingTop"
+        android:showDividers="middle">
+
+    </LinearLayout>
+</RelativeLayout>

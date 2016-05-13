@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.liuzhe.myfirebase.MainActivity">
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/action_google"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
+
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/action_add"
+        android:icon="@android:drawable/ic_menu_call"
+        android:title="@string/action_add"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_friend"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/add_friend"
+        app:showAsAction="ifRoom" />
+
+</menu>
