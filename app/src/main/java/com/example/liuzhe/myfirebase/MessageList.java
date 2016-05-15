@@ -50,7 +50,7 @@ public class MessageList extends AppCompatActivity {
 
         listView.setAdapter(firebaseListAdapter);
 
-//        final EditText editText = (EditText) findViewById(R.id.message);
+//        final EditText editText = (EditText) findViewById(R.id.email);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,9 +135,9 @@ public class MessageList extends AppCompatActivity {
 //
 ////                long count = dataSnapshot.getChildrenCount();
 //
-////                Log.v("message is :", messages.toString());
+////                Log.v("email is :", messages.toString());
 //
-////                Log.v("message count is:", String.valueOf(count));
+////                Log.v("email count is:", String.valueOf(count));
 //
 //            }
 //

@@ -28,6 +28,7 @@ import com.example.liuzhe.myfirebase.MyApp;
 import com.example.liuzhe.myfirebase.R;
 import com.example.liuzhe.myfirebase.tools.LoadImageFromStorage;
 import com.example.liuzhe.myfirebase.tools.SaveToInternalStorage;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -45,23 +46,24 @@ public class ToolsFragment extends Fragment implements View.OnClickListener, Vie
     ProgressDialog pDialog;
     ImageView logo;
     private Bitmap bitmap = null;
-    private Uri userUri;
-    private String name;
-    private String emal;
-    private String userId;
+    static Uri userUri;
+    static String name;
+    static String emal;
+    static String userId;
 
     public ToolsFragment() {
-        this.emal = MyApp.getGoogleSignInAccount().getEmail();
-        this.name = MyApp.getGoogleSignInAccount().getDisplayName();
-        this.userUri = MyApp.getGoogleSignInAccount().getPhotoUrl();
-        this.userId = MyApp.getGoogleSignInAccount().getId();
+
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static ToolsFragment newTool() {
+    public static ToolsFragment newTool(GoogleSignInAccount googleSignInAccount) {
+        emal = googleSignInAccount.getEmail();
+        name = googleSignInAccount.getDisplayName();
+        userUri = googleSignInAccount.getPhotoUrl();
+        userId = googleSignInAccount.getId();
         ToolsFragment fragment = new ToolsFragment();
 //        Bundle args = new Bundle();
 //        args.putString(TOOLS_AUTHDATA, MyApp.getGoogleSignInAccount().getEmail());
@@ -89,7 +91,6 @@ public class ToolsFragment extends Fragment implements View.OnClickListener, Vie
         rootView.findViewById(R.id.turn).setOnTouchListener(this);
         rootView.findViewById(R.id.mood).setOnTouchListener(this);
         rootView.findViewById(R.id.setting).setOnTouchListener(this);
-
 
 //        loadLogo(logo);
 //        textView.setText(getString(R.string.section_format, getArguments().getString(TOOLS_AUTHDATA, "username")));

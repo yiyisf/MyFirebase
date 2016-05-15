@@ -81,6 +81,4 @@ public class MyApp extends android.app.Application {
     private boolean isExpired(AuthData authData) {
         return (System.currentTimeMillis() / 1000 > authData.getExpires());
     }
-
-
 }

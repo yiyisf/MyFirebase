@@ -31,8 +31,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseApp;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+    private EditText mSortName;
     private EditText mPasswordView;
     private EditText mPasswordView_r;
     private View mProgressView;
@@ -66,8 +71,19 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+        mSortName = (EditText) findViewById(R.id.sortName);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView_r = (EditText) findViewById(R.id.re_password);
+        mSortName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.register || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
+                    return true;
+                }
+                return false;
+            }
+        });
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -156,17 +172,21 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         // Reset errors.
         mEmailView.setError(null);
+        mSortName.setError(null);
         mPasswordView.setError(null);
         mPasswordView_r.setError(null);
 
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
+        String sortname = mSortName.getText().toString();
         String password = mPasswordView.getText().toString();
         String re_password = mPasswordView_r.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
+
+        // Check for sortname, sortname nust input
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -189,8 +209,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             cancel = true;
         }
 
+        if (TextUtils.isEmpty(sortname)) {
+            mSortName.setError(getString(R.string.error_invalid_sortname));
+            focusView = mSortName;
+            cancel = true;
+        }
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        else if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
@@ -208,19 +233,62 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            registerFirebase(email, password);
+            registerFirebase(email, password, sortname);
 
         }
     }
 
-    private void registerFirebase(String email, String password) {
-        Firebase firebase = new Firebase("https://glowing-fire-3217.firebaseio.com");
+    private void savetoalluser(String sortname, String email, String uid) {
+        Firebase userfire = MyApp.getFirebase().child("alluser");
+        Firebase userfire_new = MyApp.getFirebase().child("alluser");
+        userfire_new.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Toast.makeText(RegisterActivity.this, "add" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+                Toast.makeText(RegisterActivity.this, "upd" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Toast.makeText(RegisterActivity.this, "remove" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Toast.makeText(RegisterActivity.this, "moved" + dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        userfire_new.push().setValue(new UserInfo(sortname, email));
+
+    }
+
+    ;
+
+
+    private void registerFirebase(final String email, String password, final String sortname) {
+        Firebase firebase = MyApp.getFirebase();
         firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 showProgress(false);
                 Toast.makeText(RegisterActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
-                Log.i("result id :", result.get("uid").toString());
+
+                savetoalluser(sortname, email, result.get("uid").toString());
+
             }
 
             @Override

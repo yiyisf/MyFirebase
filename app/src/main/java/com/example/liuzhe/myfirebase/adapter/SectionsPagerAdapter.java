@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.liuzhe.myfirebase.MyApp;
 import com.example.liuzhe.myfirebase.fragment.PlaceholderFragment;
 import com.example.liuzhe.myfirebase.fragment.ToolsFragment;
+import com.example.liuzhe.myfirebase.fragment.UsersFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -25,12 +26,27 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position < 3) {
+
+//        switch (position){
+//            case 3:
+//                return ToolsFragment.newTool();
+//            case 1:
+//                return UsersFragment.newUser();
+//            case 0:
+//                return PlaceholderFragment.newInstance(position + 1);
+//            case 2:
+//                return PlaceholderFragment.newInstance(position + 1);
+//        }
+//        return null;
+
+        if (position == 1) {
+            return UsersFragment.newUser(MyApp.getFirebase());
+        } else if (position == 3) {
+            return ToolsFragment.newTool(MyApp.getGoogleSignInAccount());
+        } else {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
-        } else {
-            return ToolsFragment.newTool();
         }
     }
 

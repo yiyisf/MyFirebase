@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.ui.auth.core.FirebaseAuthProvider;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -129,7 +130,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Toast.makeText(this, "可使用google登录：", Toast.LENGTH_SHORT).show();
 
         }
+        AuthData auth = MyApp.getFirebase().getAuth();
+        if (auth != null) {
+            Toast.makeText(this, "已登录firebase user：" + auth.getAuth().get("token"), Toast.LENGTH_SHORT).show();
 
+        }
     }
 
     private void populateAutoComplete() {
