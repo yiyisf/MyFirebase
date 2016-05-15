@@ -38,6 +38,10 @@ import com.example.liuzhe.myfirebase.tools.SaveToInternalStorage;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ActionBarSpinner extends AppCompatActivity implements View.OnClickListener {
@@ -46,6 +50,7 @@ public class ActionBarSpinner extends AppCompatActivity implements View.OnClickL
     private ImageView user_profile;
     private String userId;
     private Bitmap bitmap = null;
+//    LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +72,36 @@ public class ActionBarSpinner extends AppCompatActivity implements View.OnClickL
         }
         setImageLogo();
 
+        List<Map<String, String>> items = new ArrayList<Map<String, String>>();
+
+        Map<String, String> item0 = new HashMap<String, String>(2);
+        item0.put("text", "Browse aisles...");
+        item0.put("subText", "(Upgrade required)");
+        items.add(item0);
+
+        Map<String, String> item1 = new HashMap<String, String>(2);
+        item1.put("text", "Option 1");
+        item1.put("subText", "(sub text 1)");
+        items.add(item1);
+
+        Map<String, String> item2 = new HashMap<String, String>(2);
+        item2.put("text", "Option 2");
+        item2.put("subText", "(sub text 2)");
+        items.add(item2);
+
         // Setup spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         MyAdapter spinner_adapter = new MyAdapter(
                 toolbar.getContext(),
-                new String[]{
-                        "Yiyi",
-                        "Section 2",
-                        "Section 3",
-                });
+                items);
+//                new String[]{
+//                        "Yiyi",
+//                        "Section 2",
+//                        "Section 3",
+//                }
+//        );
 
-        spinner_adapter.setDropDownViewResource(R.layout.simple_list_item);
+//        spinner_adapter.setDropDownViewResource(R.layout.simple_list_item);
 
         spinner.setAdapter(spinner_adapter);
 
@@ -156,12 +180,27 @@ public class ActionBarSpinner extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+    private static class MyAdapter extends ArrayAdapter<Map<String, String>> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
-        public MyAdapter(Context context, String[] objects) {
-            super(context, R.layout.simple_list_item_1, objects);
+        public MyAdapter(Context context, List<Map<String, String>> objects) {
+            super(context, R.layout.simple_list_item, (List<Map<String, String>>) objects);
             mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            try {
+
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View row = inflater.inflate(R.layout.simple_list_item_1, parent, false);
+                TextView textView = (TextView) row.findViewById(R.id.spinner_text);
+                textView.setText(getItem(position).get("text"));
+                return row;
+            } catch (Error e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
@@ -169,20 +208,24 @@ public class ActionBarSpinner extends AppCompatActivity implements View.OnClickL
             View view;
 
 
+            try {
                 if (convertView == null) {
                     // Inflate the drop down using the helper's LayoutInflater
                     LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
-                    view = inflater.inflate(R.layout.simple_list_item_1, parent, false);
+                    view = inflater.inflate(R.layout.simple_list_item, parent, false);
 
                 } else {
                     view = convertView;
                 }
 //                return view;
 
-            TextView textView = (TextView) view.findViewById(R.id.spinner_text);
-            textView.setText(getItem(position));
-
-            return view;
+                TextView textView = (TextView) view.findViewById(R.id.spinner_name);
+                textView.setText(getItem(position).get("text"));
+                return view;
+            } catch (Error e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
