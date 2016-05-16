@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.liuzhe.myfirebase.Main2Activity"
-    android:background="@color/app_background">
+    android:background="@color/white">
 
     <ScrollView
+        android:id="@+id/user_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <include layout="@layout/content_user_list" />
 

@@ -5,22 +5,25 @@ package com.example.liuzhe.myfirebase.fragment;
  */
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.liuzhe.myfirebase.ChatMessage;
-import com.example.liuzhe.myfirebase.MyApp;
 import com.example.liuzhe.myfirebase.R;
 import com.example.liuzhe.myfirebase.UserInfo;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
+
+import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -38,6 +41,7 @@ public class UsersFragment extends Fragment {
     private String userId;
 
     static Firebase mRef;
+    private View rootView;
 
     public UsersFragment() {
     }
@@ -49,9 +53,6 @@ public class UsersFragment extends Fragment {
     public static UsersFragment newUser(Firebase firebase) {
         mRef = firebase.child("alluser");
         UsersFragment fragment = new UsersFragment();
-//        Bundle args = new Bundle();
-//        args.putString(TOOLS_AUTHDATA, MyApp.getGoogleSignInAccount().getEmail());
-//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -59,22 +60,8 @@ public class UsersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_users, container, false);
-        final ListView userList = (ListView) rootView.findViewById(R.id.userView);
+        rootView = inflater.inflate(R.layout.fragment_users, container, false);
 
-        FirebaseListAdapter firebaseListAdapter = new FirebaseListAdapter<UserInfo>(getActivity(), UserInfo.class, R.layout.simple_list_item, mRef) {
-            @Override
-            protected void populateView(View view, UserInfo userInfo, int i) {
-                ((TextView) view.findViewById(R.id.spinner_name)).setText(userInfo.getName());
-                ((TextView) view.findViewById(R.id.spinner_email)).setText(userInfo.getEmail());
-            }
-        };
-
-        userList.setAdapter(firebaseListAdapter);
-
-
-//        loadLogo(logo);
-//        textView.setText(getString(R.string.section_format, getArguments().getString(TOOLS_AUTHDATA, "username")));
         return rootView;
     }
 
@@ -82,6 +69,21 @@ public class UsersFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        ListView userList = (ListView) rootView.findViewById(R.id.userView);
 
+        FirebaseListAdapter firebaseListAdapter = new FirebaseListAdapter<UserInfo>(getActivity(), UserInfo.class, R.layout.simple_list_item, mRef) {
+            @Override
+            protected void populateView(View view, UserInfo userInfo, int i) {
+                ((TextView) view.findViewById(R.id.spinner_name)).setText(userInfo.getName());
+                ((TextView) view.findViewById(R.id.spinner_email)).setText(userInfo.getEmail());
+                String photo = userInfo.getPhoto();
+                if (photo != null) {
+                    byte[] imageAsBytes = Base64.decode(photo.getBytes(), Base64.DEFAULT);
+                    ((ImageView) view.findViewById(R.id.spinner_photo)).setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                }
+            }
+        };
+
+        userList.setAdapter(firebaseListAdapter);
     }
 }

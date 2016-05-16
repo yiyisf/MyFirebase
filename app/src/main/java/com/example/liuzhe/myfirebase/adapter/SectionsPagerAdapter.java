@@ -42,7 +42,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         if (position == 1) {
             return UsersFragment.newUser(MyApp.getFirebase());
         } else if (position == 3) {
-            return ToolsFragment.newTool(MyApp.getGoogleSignInAccount());
+            if (MyApp.getGoogleSignInAccount() != null) {
+                return ToolsFragment.newTool(MyApp.getGoogleSignInAccount());
+            } else {
+                return PlaceholderFragment.newInstance(position + 1);
+            }
         } else {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).

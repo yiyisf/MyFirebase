@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,7 +39,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseApp;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.client.utilities.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -272,7 +276,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        userfire_new.push().setValue(new UserInfo(sortname, email));
+        Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.ic_google);
+        ByteArrayOutputStream fire_photo = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, fire_photo);
+        byte[] bytes = fire_photo.toByteArray();
+        String save_photo = Base64.encodeBytes(bytes);
+
+
+        userfire_new.push().setValue(new UserInfo(sortname, email, save_photo));
 
     }
 
