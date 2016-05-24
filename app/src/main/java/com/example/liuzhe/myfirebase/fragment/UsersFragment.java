@@ -4,26 +4,27 @@ package com.example.liuzhe.myfirebase.fragment;
  * Created by liuzhe on 2016/5/11.
  */
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ListViewCompat;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.liuzhe.myfirebase.MessageList;
 import com.example.liuzhe.myfirebase.R;
 import com.example.liuzhe.myfirebase.UserInfo;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
-
-import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -34,15 +35,9 @@ public class UsersFragment extends Fragment {
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private Bitmap bitmap = null;
-    private Uri userUri;
-    private String name;
-    private String emal;
-    private String userId;
-
+    FirebaseListAdapter firebaseListAdapter;
     static Firebase mRef;
     private View rootView;
-
     public UsersFragment() {
     }
 
@@ -69,13 +64,14 @@ public class UsersFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ListView userList = (ListView) rootView.findViewById(R.id.userView);
+        ListViewCompat userList = (ListViewCompat) rootView.findViewById(R.id.userView);
 
-        FirebaseListAdapter firebaseListAdapter = new FirebaseListAdapter<UserInfo>(getActivity(), UserInfo.class, R.layout.simple_list_item, mRef) {
+        firebaseListAdapter = new FirebaseListAdapter<UserInfo>(getActivity(), UserInfo.class, R.layout.simple_list_item, mRef) {
             @Override
             protected void populateView(View view, UserInfo userInfo, int i) {
                 ((TextView) view.findViewById(R.id.spinner_name)).setText(userInfo.getName());
                 ((TextView) view.findViewById(R.id.spinner_email)).setText(userInfo.getEmail());
+
                 String photo = userInfo.getPhoto();
                 if (photo != null) {
                     byte[] imageAsBytes = Base64.decode(photo.getBytes(), Base64.DEFAULT);
@@ -83,6 +79,16 @@ public class UsersFragment extends Fragment {
                 }
             }
         };
+
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserInfo touser = (UserInfo) firebaseListAdapter.getItem(position);
+                Intent talkIntent = new Intent(getActivity(), MessageList.class);
+                talkIntent.putExtra("touser", touser.getName());
+                startActivity(talkIntent);
+            }
+        });
 
         userList.setAdapter(firebaseListAdapter);
     }

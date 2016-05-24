@@ -1,5 +1,6 @@
 package com.example.liuzhe.myfirebase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,6 +45,16 @@ public class UserList extends AppCompatActivity {
             }
         };
         listView.setAdapter(firebaseListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserInfo touser = (UserInfo) firebaseListAdapter.getItem(position);
+                Intent talkIntent = new Intent(UserList.this, MessageList.class);
+
+                talkIntent.putExtra("touser", touser.getName());
+                startActivity(talkIntent);
+            }
+        });
     }
 
 

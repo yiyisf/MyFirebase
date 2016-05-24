@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
     tools:context=".MessageList">
 
     <android.support.design.widget.AppBarLayout
@@ -22,21 +21,41 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/messageView"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:transcriptMode="alwaysScroll"
+        tools:context=".MessageList"
+        tools:listitem="@layout/list_item" />
+    <!--<android.support.v7.widget.AppCompatEditText -->
+    <!--android:layout_marginTop="520dp"        -->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_width="match_parent" />-->
+    <LinearLayout
+        android:id="@+id/edit"
+        android:layout_marginTop="510dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize">
+        android:orientation="horizontal">
 
-        <include layout="@layout/content_message_list" />
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:inputType="text" />
 
-    </ScrollView>
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/buttonSend"
+            android:src="@drawable/ic_send_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send" />
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--android:src="@android:drawable/ic_input_add" />-->
+    </LinearLayout>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

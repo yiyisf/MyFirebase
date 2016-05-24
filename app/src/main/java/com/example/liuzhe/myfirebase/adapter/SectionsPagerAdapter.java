@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.liuzhe.myfirebase.MyApp;
+import com.example.liuzhe.myfirebase.fragment.MusicFragment;
 import com.example.liuzhe.myfirebase.fragment.PlaceholderFragment;
 import com.example.liuzhe.myfirebase.fragment.ToolsFragment;
 import com.example.liuzhe.myfirebase.fragment.UsersFragment;
@@ -39,7 +40,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 //        }
 //        return null;
 
-        if (position == 1) {
+        if (position == 0) {
             return UsersFragment.newUser(MyApp.getFirebase());
         } else if (position == 3) {
             if (MyApp.getGoogleSignInAccount() != null) {
@@ -47,6 +48,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             } else {
                 return PlaceholderFragment.newInstance(position + 1);
             }
+        } else if (position == 1) {
+            return MusicFragment.newInstance(1);
+
         } else {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
@@ -64,9 +68,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "我的";
-            case 1:
                 return "朋友";
+            case 1:
+                return "我的";
             case 2:
                 return "新鲜";
             case 3:

@@ -91,6 +91,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        Checklogin();
         // Set up the login form.
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -119,6 +121,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setScopes(gso.getScopeArray());
         signInButton.setOnClickListener(this);
+
+    }
+
+    private void Checklogin() {
         OptionalPendingResult<GoogleSignInResult> pendingResult =
                 Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (pendingResult.isDone()) {
@@ -127,13 +133,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             MyApp.setGoogleSignInAccount(googleAccount);
             startMain();
         } else {
-            Toast.makeText(this, "可使用google登录：", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "可使用google登录：", Toast.LENGTH_SHORT).show();
 
         }
         AuthData auth = MyApp.getFirebase().getAuth();
         if (auth != null) {
-            Toast.makeText(this, "已登录firebase user：" + auth.getAuth().get("token"), Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(this, "已登录firebase user：" + auth.getAuth().get("token"), Toast.LENGTH_SHORT).show();
+            startMain();
         }
     }
 

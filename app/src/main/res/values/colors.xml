@@ -4,10 +4,11 @@
     <color name="colorPrimary">#F44336</color>
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <color name="colorPrimaryDark">#F44336</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#4A148C</color>
     <color name="white">#ffffff</color>
     <color name="app_background">#FFCDD2</color>
     <color name="shape_line_color">#c0c0c0</color>
     <color name="button_background">#EF9A9A</color>
     <color name="button_down">#E57373</color>
+    <color name="error_message_background">#4A148C</color>
 </resources>

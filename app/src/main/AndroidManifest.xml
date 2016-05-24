@@ -33,7 +33,8 @@
         <activity
             android:name=".MessageList"
             android:label="@string/title_activity_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".Main2Activity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".UserList"
             android:label="@string/title_user_list"
@@ -72,7 +73,7 @@
             android:label="@string/title_activity_settings" />
 
         <service
-            android:name=".MyService"
+            android:name=".service.MyService"
             android:enabled="true"
             android:exported="true"></service>
     </application>
