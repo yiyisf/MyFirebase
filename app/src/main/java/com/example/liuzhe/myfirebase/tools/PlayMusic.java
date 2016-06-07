@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.example.liuzhe.myfirebase.R;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Created by liuzhe on 2016/5/24.
@@ -46,6 +45,7 @@ public class PlayMusic extends AsyncTask<Void, Void, Boolean> implements MediaPl
 
     @Override
     protected void onCancelled() {
+        mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
         super.onCancelled();

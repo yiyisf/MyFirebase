@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "50073597837-k9kff4kes5u11iq9cut52f09ckqmml2h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.liuzhe.myfirebase",
-            "certificate_hash": "B8A5ADBE2D99B087E1385991B1FCC8A48786C61A"
-          }
-        },
-        {
           "client_id": "50073597837-6l1ich9jiq7r2c5uj3stcmul78tcs08g.apps.googleusercontent.com",
           "client_type": 3
         }

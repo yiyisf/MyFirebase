@@ -34,7 +34,7 @@
             android:name=".MessageList"
             android:label="@string/title_activity_list"
             android:parentActivityName=".Main2Activity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UserList"
             android:label="@string/title_user_list"
@@ -75,7 +75,12 @@
         <service
             android:name=".service.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <receiver
+            android:name=".tools.MusicReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>
